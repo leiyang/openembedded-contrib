@@ -1,0 +1,31 @@
+SUMMARY = "Combined traceroute and ping utility"
+DESCRIPTION = "mtr combines the functionality of the 'traceroute' and 'ping' programs in a single network diagnostic tool."
+HOMEPAGE = "http://christophe.varoqui.free.fr/"
+DEPENDS = "readline libaio LVM"
+
+LICENSE = "GPLv2"
+
+LIC_FILES_CHKSUM = "file://COPYING;md5=7be2873b6270e45abacc503abbe2aa3d"
+S="${WORKDIR}/${PN}"
+
+SRC_URI = "http://git.opensvc.com/multipath-tools/.git;protocol=git"
+
+SRCREV = "c23c0d33ed98a1dcee40115018b73cb3d4cda8d7"
+
+inherit autotools
+EXTRA_OEMAKE="LIB=${libdir} exec_prefix=${exec_prefix} bindir=${bindir}"
+CFLAGS_preped = " -L${S}/libmultipath "
+
+PACKAGES =+ "libmpathpersist mpathpersist kpartx libmultipath multipath multipathd multipath-dbg"
+
+FILES_${PN}= "${libdir} ${bindir} ${base_libdir} ${sysconfdir}"
+FILES_libmpathpersist= "${libdir}/libmpathpersist*"
+FILES_mpathpersist= "$({bindir}/mpathpersist"
+FILES_kpartx= "$({bindir}/kpartx"
+FILES_libmultipath= "$({base_libdir}/libmultipath*"
+FILES_multipath= "$({bindir}/multipath ${sysconfdir}/01_udev ${sysconfdir}/02_multipath"
+FILES_multipathd= "$({bindir}/multipathd"
+
+FILES_libltdl-dev = "${libdir}/libltdl${SOLIBSDEV} ${includedir}"
+FILES_libltdl-staticdev = "${libdir}/libltdl.a"
+FILES_multipath-dbg = "${libdir}/multipath/.debug/"

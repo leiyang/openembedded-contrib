@@ -1,0 +1,36 @@
+SUMMARY = "Combined disk mulitpath device utility"
+DESCRIPTION = "Tools are in charge of maintaining the disk multipath device maps and react to path and map events"
+HOMEPAGE = "http://christophe.varoqui.free.fr/"
+DEPENDS = "readline libaio lvm2"
+LICENSE = "GPLv2"
+
+LIC_FILES_CHKSUM = "file://COPYING;md5=7be2873b6270e45abacc503abbe2aa3d"
+S="${WORKDIR}/${PN}-${PV}"
+
+SRC_URI = "file://multipath-tools-2.0.zip" 
+
+inherit autotools
+EXTRA_OEMAKE="LIB=${libdir} exec_prefix=${exec_prefix} libdir=${libdir}"
+
+
+PACKAGES += "libmpathpersist mpathpersist kpartx libmultipath multipath multipathd multipath-dbg"
+
+#do_compile () {
+#        oe_runmake LIB="${libdir}" exec_prefix="${exec_prefix}" libdir="${libdir}"
+#}
+
+ALLOW_EMPTY_${PN} = "1"
+FILES_${PN}     = ""
+
+FILES_libmpathpersist = "${libdir}/libmpathpersist*"
+FILES_mpathpersist = "${sbindir}/mpathpersist"
+FILES_kpartx = "${sbindir}/kpartx ${base_libdir}/udev/"
+FILES_libmultipath = "${libdir}/libmultipath*"
+FILES_multipath = "${sbindir}/multipath ${sysconfdir}"
+FILES_multipathd = "${sbindir}/multipathd ${base_libdir}"
+
+FILES_multipath-dbg = "${libdir}/multipath/.debug/"
+
+RDEPENDS_${PN} += "libmpathpersist mpathpersist kpartx libmultipath multipath multipathd"
+
+#INSANE_SKIP_kpartx = "dev-deps"
